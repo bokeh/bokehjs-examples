@@ -4,11 +4,11 @@
   "description": "Example of bundling bokehjs with webpack",
   "license": "MIT",
   "devDependencies": {
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "bokehjs": "file:./bokehjs-1.1.0-rc1.tgz"
+    "bokehjs": "file:./bokeh-bokehjs-2.0.0-dev.6.tgz"
   },
   "scripts": {
     "build": "node_modules/.bin/webpack-cli"
