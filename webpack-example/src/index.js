@@ -1,10 +1,13 @@
-import * as Bokeh from "bokehjs"
+import * as plt from "bokehjs/api/plotting"
+import { ColumnDataSource } from "bokehjs/models/sources";
+import { range, zip } from "bokehjs/core/util/array";
+import { Random } from "bokehjs/core/util/random";
+import { TapTool } from "bokehjs/models/tools/gestures/tap_tool";
+import { set_log_level, logger } from "bokehjs/core/logging";
+import { version } from "bokehjs/version";
 
-const plt = Bokeh.Plotting
-const {range, zip, Random} = Bokeh.LinAlg
-
-Bokeh.set_log_level("info")
-Bokeh.logger.info(`Bokeh ${Bokeh.version}`)
+set_log_level("info")
+logger.info(`Bokeh ${version}`)
 
 const random = new Random(1)
 
@@ -27,7 +30,7 @@ const colors = []
 for (const [r, g] of zip(xx.map((x) => 50 + 2*x), yy.map((y) => 30 + 2*y)))
   colors.push(plt.color(r, g, 150))
 
-const source = new Bokeh.ColumnDataSource({
+const source = new ColumnDataSource({
   data: {x: xx, y: yy, radius: radii, colors},
 })
 
@@ -41,7 +44,7 @@ const circles = p.circle({field: "x"}, {field: "y"},
 p.text({field: "x"}, {field: "y"}, indices,
   {source, alpha: 0.5, text_font_size: "5pt", text_baseline: "middle", text_align: "center"})
 
-const tap = p.toolbar.select_one(Bokeh.TapTool)
+const tap = p.toolbar.select_one(TapTool)
 tap.renderers = [circles]
 tap.callback = {
   execute(_obj, {source}) {
