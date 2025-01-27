@@ -83,9 +83,8 @@
     "scripts": {
       "build": "webpack build",
       "serve": "webpack serve"
-    ...
+    }
     ```
-
 
 8. Build and run basic example without any BokehJS
 
@@ -108,11 +107,9 @@
 
     ```json
     "compilerOptions": {
-      ...
       "paths": {
         "@bokehjs/*": ["./node_modules/@bokeh/bokehjs/build/js/lib/*"]
       }
-      ...
     }
     ```
 
@@ -120,13 +117,12 @@
 
     ```typescript
     const config: webpack.Configuration = {
-      ...
       resolve: {
         alias: {
           "@bokehjs": path.resolve(__dirname, "node_modules/@bokeh/bokehjs/build/js/lib/")
         }
       },
-      ...
+    }
     ````
 
 12. Remove contents of `src/index.ts` and replace with code to create BokehJS plot:
