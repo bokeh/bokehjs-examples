@@ -68,5 +68,8 @@ rm temp.json
 # 5. Copy tests into temp example directory
 cp -r ../../../tests .
 
-# Run tests
+# 6. Install playwright browser
+npx playwright install chromium
+
+# 7. Run tests
 npm run test

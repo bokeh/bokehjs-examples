@@ -21,6 +21,7 @@ defaults:
 
 jobs:
   build-bokehjs:
+    name: Build bokehjs npm package
     runs-on: ubuntu-24.04
 
     steps:
@@ -49,3 +50,31 @@ jobs:
           name: bokehjs-artifact
           path: bokeh/bokehjs/bokeh-bokehjs-*
           if-no-files-found: error
+
+  test:
+    name: Create and test examples
+    needs: build-bokehjs
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup micromamba for node
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: node-env
+          create-args: >-
+            nodejs=22
+          init-shell: bash
+          cache-environment: true
+
+      - name: Unpack bokehjs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bokehjs-artifact
+
+      - name:
+        working-directory: ci
+        run: |
+          bash prepare_playwright.sh
