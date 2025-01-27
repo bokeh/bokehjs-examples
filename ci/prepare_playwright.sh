@@ -69,7 +69,7 @@ rm temp.json
 cp -r ../../../tests .
 
 # 6. Install playwright browser
-npm install playwright chromium
+npx playwright install chromium
 
 # 7. Run tests
 npm run test
