@@ -12,7 +12,7 @@ installed.
 
 ```bash
 cd <directory of choice>
-git clone -b ianthomas23/bokehjs_examples_temp --single-branch --depth 1 git@github.com:bokeh/bokeh.git
+git clone -b ianthomas23/bokehjs_examples_temp --single-branch --depth 1 https://github.com/bokeh/bokeh.git
 cd bokeh/bokehjs
 node make build
 npm pack
