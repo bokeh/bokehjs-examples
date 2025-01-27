@@ -1,0 +1,51 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "24 03 * * SUN"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-bokehjs:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Setup micromamba for node
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: node-env
+          create-args: >-
+            nodejs=22
+          init-shell: bash
+          cache-environment: true
+
+      - name: Clone bokeh branch
+        run: |
+          git clone -b ianthomas23/bokehjs_examples_temp --single-branch --depth 1 git@github.com:bokeh/bokeh.git
+
+      - name: Build bokehjs
+        working-directory: bokeh/bokehjs
+        run: |
+          node make build
+          npm pack
+
+      - name: Upload bokehjs npm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: bokehjs-artifact
+          path: bokeh/bokehjs/bokeh-bokehjs-*
+          if-no-files-found: error
