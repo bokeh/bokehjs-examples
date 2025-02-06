@@ -8,6 +8,12 @@ set -eux
 export TYPE=typescript
 export EXAMPLE=vanilla_webpack
 
+function merge-json() {
+  # merge the second json file into the first.
+  TEMP_FILE=$(mktemp)
+  jq '. * input' $1 $2 > TEMP_FILE && mv TEMP_FILE $1
+}
+
 # 1. Create and build example code in temporary directory
 cd $TYPE && bash ./create_$EXAMPLE.sh && cd ..
 
@@ -61,8 +67,7 @@ cat > temp.json << EOF
   }
 }
 EOF
-npm install --save-dev json-merger
-npx json-merger --output package.json --pretty package.json temp.json
+merge-json package.json temp.json
 rm temp.json
 
 # 5. Copy tests into temp example directory
