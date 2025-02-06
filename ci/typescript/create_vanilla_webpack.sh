@@ -97,51 +97,23 @@ rm temp.json
 # 9. Add BokehJS dependency
 npm install ../../../../bokeh-bokehjs-3.7.0-dev.5.tgz
 
-# 10. tsconfig.json needs workaround for @bokehjs paths
-cat > temp.json << EOF
-{
-  "compilerOptions": {
-    "paths": {
-      "@bokehjs/*": ["./node_modules/@bokeh/bokehjs/build/js/lib/*"]
-    }
-  }
-}
-EOF
-npx json-merger --output tsconfig.json --pretty tsconfig.json temp.json
-rm temp.json
-
-# 11. webpack.config.ts needs workaround to resolve @bokehjs alias
-# TODO: use proper ts parser to parse, add new code, write back out
-head -13 webpack.config.ts > temp.ts
-cat >> temp.ts << EOF
-  resolve: {
-    alias: {
-      "@bokehjs": path.resolve(__dirname, "node_modules/@bokeh/bokehjs/build/js/lib/")
-    }
-  },
-EOF
-tail -9 webpack.config.ts >> temp.ts
-mv temp.ts webpack.config.ts
-
-# 12. Replace src/index.ts with code to create BokehJS plot
+# 10. Replace src/index.ts with code to create BokehJS plot
 cat > src/index.ts << EOF
-import { Column, ColumnDataSource, version } from "@bokehjs/bokeh";
-import { figure, show } from "@bokehjs/api/plotting";
-import { Button } from "@bokehjs/models/widgets";
+import * as Bokeh from "@bokeh/bokehjs";
 
-console.info("BokehJS version:", version);
+console.info("BokehJS version:", Bokeh.version);
 
 function create_bokehjs_plot(target_id: string) {
-  const source = new ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
+  const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
 
-  const plot = figure({
+  const plot = Bokeh.Plotting.figure({
     title: "Example BokehJS plot", height: 500, width: 500,
     x_range: [0, 1], y_range: [0, 1], sizing_mode: "stretch_width",
   });
 
   plot.scatter({ field: "x" }, { field: "y" }, {source, size: { field: "size" }});
 
-  const button = new Button({label: "Click me to add a point", button_type: "primary"});
+  const button = new Bokeh.Widgets.Button({label: "Click me to add a point", button_type: "primary"});
   function button_callback() {
     const data = source.data as any;
     data.x.push(Math.random());
@@ -151,14 +123,14 @@ function create_bokehjs_plot(target_id: string) {
   }
   button.on_click(button_callback);
 
-  const column = new Column({children: [plot, button], sizing_mode: "stretch_width"});
-  show(column, target_id);
+  const column = new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
+  Bokeh.Plotting.show(column, target_id);
 }
 
 create_bokehjs_plot("#target");
 EOF
 
-# 13. Rebuild and serve
+# 11. Rebuild and serve
 npm install
 npm run build
 #npm run serve
