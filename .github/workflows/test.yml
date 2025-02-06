@@ -78,3 +78,12 @@ jobs:
         working-directory: ci
         run: |
           bash prepare_playwright.sh
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifact
+          path: |
+            ci/temp/
+            !ci/temp/**/node_modules
