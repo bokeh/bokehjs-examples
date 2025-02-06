@@ -8,6 +8,12 @@ mkdir -p $OUTPUT_DIRECTORY
 cd $OUTPUT_DIRECTORY
 rm -rf *
 
+function merge-json() {
+  # merge the second json file into the first.
+  TEMP_FILE=$(mktemp)
+  jq '. * input' $1 $2 > TEMP_FILE && mv TEMP_FILE $1
+}
+
 # 1. Create initial package.json (npm project settings)
 npm init --yes
 
@@ -85,8 +91,7 @@ cat > temp.json << EOF
   }
 }
 EOF
-npm install --save-dev json-merger
-npx json-merger --output package.json --pretty package.json temp.json
+merge-json package.json temp.json
 rm temp.json
 
 # 8. Build and run basic example without any BokehJS
