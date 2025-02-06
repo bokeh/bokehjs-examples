@@ -1,80 +1,8 @@
 #!/usr/bin/env bash
 #
-# Prepare for playwright tests in a single example directory.
-# Eventually need to look through all example directories.
+# Prepare and run playwright tests in all example directories.
 
 set -eux
 
-export TYPE=typescript
-export EXAMPLE=vanilla_webpack
-
-function merge-json() {
-  # merge the second json file into the first.
-  TEMP_FILE=$(mktemp)
-  jq '. * input' $1 $2 > TEMP_FILE && mv TEMP_FILE $1
-}
-
-# 1. Create and build example code in temporary directory
-cd $TYPE && bash ./create_$EXAMPLE.sh && cd ..
-
-# 2. Create *-test directory
-mkdir temp/$TYPE/$EXAMPLE-test
-cd temp/$TYPE/$EXAMPLE-test
-
-# 3. Create initial package.json
-npm init --yes
-
-# 4. Add dev dependencies
-npm install --save-dev "@playwright/test"
-npm install --save-dev ../$EXAMPLE
-
-# 5. Create playwright.config.ts
-cat > playwright.config.ts << EOF
-import { defineConfig, devices } from '@playwright/test';
-
-export default defineConfig({
-  testDir: './tests',
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  use: {
-    baseURL: 'http://localhost:4500',
-    trace: 'on-first-retry',
-  },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    }
-  ],
-  webServer: {
-    command: 'npm run serve',
-    url: 'http://localhost:4500',
-    reuseExistingServer: !process.env.CI
-  }
-});
-EOF
-
-# 4. Add test commands to package.json
-cat > temp.json << EOF
-{
-  "scripts": {
-    "serve": "npm explore $EXAMPLE -- npm run serve",
-    "test": "playwright test",
-    "test:ui": "playwright test --ui"
-  }
-}
-EOF
-merge-json package.json temp.json
-rm temp.json
-
-# 5. Copy tests into temp example directory
-cp -r ../../../tests .
-
-# 6. Install playwright browser
-npx playwright install chromium
-
-# 7. Run tests
-npm run test
+./single_example.sh typescript vanilla_rspack
+./single_example.sh typescript vanilla_webpack
