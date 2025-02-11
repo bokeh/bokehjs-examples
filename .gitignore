@@ -2,3 +2,4 @@ node_modules/
 package-lock.json
 ci/temp
 bokeh-bokehjs-*.tgz
+dist/

@@ -1,4 +1,3 @@
-
 # Vanilla (no framework) webpack typescript example
 
 1. Create initial `package.json` (`npm` project settings)
@@ -13,7 +12,7 @@
     npm install --save-dev typescript webpack webpack-cli webpack-dev-server ts-node ts-loader
     ```
 
-3. Create typescript configuration `tsconfig.json`  containing:
+3. Create typescript configuration `tsconfig.json` containing
 
     ```json
     {
@@ -29,7 +28,7 @@
     }
     ```
 
-4. Create webpack configuration `webpack.config.ts` containing:
+4. Create webpack configuration `webpack.config.ts` containing
 
     ```typescript
     import path from 'path';
@@ -56,7 +55,7 @@
     export default config;
     ```
 
-5. Create HTML file `assets/index.html` containing:
+5. Create HTML file `assets/index.html` containing
 
     ```html
     <!DOCTYPE html>
@@ -71,18 +70,20 @@
     </html>
     ```
 
-6. Create source typescript file `src/index.ts` containing:
+6. Create source typescript file `src/index.ts` containing
 
-    ```ts
+    ```typescript
     console.log("Successfully loaded")
     ```
 
-7. Add build and serve commands to the `scripts` section of `package.json`:
+7. Add `build` and `serve` commands to the `scripts` section of `package.json`
 
     ```json
-    "scripts": {
-      "build": "webpack build",
-      "serve": "webpack serve"
+    {
+      "scripts": {
+        "build": "webpack build",
+        "serve": "webpack serve"
+      }
     }
     ```
 
@@ -94,16 +95,15 @@
     npm run serve
     ```
 
-   In a web browser navigate to http://localhost:4500/
+    In a web browser navigate to http://localhost:4500/
 
-9. Add BokehJS dependency to the project. This assumes the package has been built and copied to the
-   root directory of this repository as outlined in the top-level README.md.
+9. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level `README.md`.
 
     ```bash
     npm install ../../../../bokeh-bokehjs-3.7.0-dev.5.tgz
     ```
 
-10. Remove contents of `src/index.ts` and replace with code to create BokehJS plot:
+10. Replace contents of `src/index.ts` with code to create BokehJS plot containing
 
     ```typescript
     import * as Bokeh from "@bokeh/bokehjs";
@@ -142,7 +142,7 @@
     ```bash
     npm install
     npm run build
-    #npm run serve
+    npm run serve
     ```
 
-   In a web browser navigate to http://localhost:4500/
+    In a web browser navigate to http://localhost:4500/

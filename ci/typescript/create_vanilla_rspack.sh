@@ -60,8 +60,8 @@ const config: Configuration = {
 export default config;
 EOF
 
-# 5. Create HTML file
-mkdir assets
+# 5. Create HTML file assets/index.html
+mkdir -p assets
 cat > assets/index.html << EOF
 <!DOCTYPE html>
 <html>
@@ -75,13 +75,13 @@ cat > assets/index.html << EOF
 </html>
 EOF
 
-# 6. Create source typescript file
-mkdir src
+# 6. Create source typescript file src/index.ts
+mkdir -p src
 cat > src/index.ts << EOF
 console.log("Successfully loaded")
 EOF
 
-# 7. Add build and serve commands to package.json
+# 7. Add build and serve commands to the scripts section of package.json
 cat > temp.json << EOF
 {
   "scripts": {
@@ -97,11 +97,13 @@ rm temp.json
 # npm install
 # npm run build
 # npm run serve
+# In a web browser navigate to http://localhost:4500/
 
-# 9. Add BokehJS dependency
+# 9. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level README.md.
 npm install ../../../../bokeh-bokehjs-3.7.0-dev.5.tgz
 
-# 10. Replace src/index.ts with code to create BokehJS plot
+# 10. Replace contents of src/index.ts with code to create BokehJS plot
+mkdir -p src
 cat > src/index.ts << EOF
 import * as Bokeh from "@bokeh/bokehjs";
 
@@ -137,4 +139,5 @@ EOF
 # 11. Rebuild and serve
 npm install
 npm run build
-#npm run serve
+# npm run serve
+# In a web browser navigate to http://localhost:4500/
