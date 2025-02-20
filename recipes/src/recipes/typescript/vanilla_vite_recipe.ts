@@ -51,9 +51,10 @@ export class VanillaViteRecipe extends Recipe {
       'Replace `src/main.ts` with a simple hello example',
       'src/main.ts',
       baseTypeScriptExample.import + "\n" +
+      baseTypeScriptExample.version + "\n" +
       baseTypeScriptExample.function + "\n" +
       "document.querySelector<HTMLDivElement>('#app')!.innerHTML = \\`<div id='target'>Hello</div>\\`;\n\n" +
-      'create_bokehjs_plot("#target");'
+      baseTypeScriptExample.show
     ));
 
     this.add(new CommandStep(
