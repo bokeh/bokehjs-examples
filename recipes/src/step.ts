@@ -42,7 +42,10 @@ export class CommandStep extends Step {
 
     const allPrefix = this.ignoreIfBash ? '# ' : '';
     for (const command of this.commands) {
-      const prefix = command === 'npm run serve' ? '# ' : allPrefix;
+      let prefix = allPrefix;
+      if (command === 'npm run serve' || command === 'npm run dev') {
+        prefix = '# ' + prefix;
+      }
       fs.writeSync(fd, prefix + command + '\n');
     }
     if (this.postscript) {
@@ -66,20 +69,24 @@ export class CommandStep extends Step {
   }
 }
 
-/**
- * Step to create a file.
- */
-export class CreateFileStep extends Step {
-  constructor(readonly description: string, readonly filename: string, readonly contents: string) {
+abstract class CreateOrReplaceFileStep extends Step {
+  constructor(
+    readonly description: string,
+    readonly filename: string,
+    readonly contents: string,
+    readonly alreadyExists: boolean
+  ) {
     super(description);
   }
 
   writeToBash(fd: number, index: number): void {
     this.writeDescriptionBash(fd, index);
 
-    const dirname = path.dirname(this.filename);
-    if (dirname !== '.') {
-      fs.writeSync(fd, `mkdir -p ${dirname}\n`);
+    if (!this.alreadyExists) {
+      const dirname = path.dirname(this.filename);
+      if (dirname !== '.') {
+        fs.writeSync(fd, `mkdir -p ${dirname}\n`);
+      }
     }
 
     fs.writeSync(fd, `cat > ${this.filename} << EOF\n`);
@@ -96,14 +103,24 @@ export class CreateFileStep extends Step {
     const { spacer } = this;
     const language = languageFromExtension(this.filename);
     fs.writeSync(fd, '\n' + spacer + '```' + language + '\n');
-    for (const line of this.contents.split('\n')) {
+    for (let line of this.contents.split('\n')) {
       if (line) {
+        line = line.replaceAll('\\`', '`');
         fs.writeSync(fd, spacer + line + '\n');
       } else {
         fs.writeSync(fd, '\n');
       }
     }
     fs.writeSync(fd, spacer + '```\n');
+  }
+}
+
+/**
+ * Step to create a file.
+ */
+export class CreateFileStep extends CreateOrReplaceFileStep {
+  constructor(description: string, filename: string, contents: string) {
+    super(description, filename, contents, false);
   }
 }
 
@@ -143,5 +160,38 @@ export class MergeJsonStep extends Step {
       }
     }
     fs.writeSync(fd, spacer + '```\n');
+  }
+}
+
+/**
+ * Step to remove files.
+ */
+export class RemoveFilesStep extends Step {
+  constructor(readonly description: string, readonly filenames: string[]) {
+    super(description);
+  }
+
+  writeToBash(fd: number, index: number): void {
+    this.writeDescriptionBash(fd, index);
+
+    fs.writeSync(fd, 'rm ' + this.filenames.join(' ') + '\n');
+  }
+
+  writeToReadme(fd: number, index: number): void {
+    this.writeDescriptionReadme(fd, index);
+
+    const { spacer } = this;
+    fs.writeSync(fd, '\n' + spacer + '```bash\n');
+    fs.writeSync(fd, spacer + 'rm ' + this.filenames.join(' ') + '\n');
+    fs.writeSync(fd, spacer + '```\n');
+  }
+}
+
+/**
+ * Step to replace the contents of an existing file.
+ */
+export class ReplaceFileStep extends CreateOrReplaceFileStep {
+  constructor(description: string, filename: string, contents: string) {
+    super(description, filename, contents, true);
   }
 }

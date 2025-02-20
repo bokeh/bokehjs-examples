@@ -12,6 +12,15 @@ fi
 export TYPE=$1
 export EXAMPLE=$2
 
+if [ $EXAMPLE == "vanilla_vite" ]; then
+  export PORT=5173
+  export SERVE_CMD="npm run dev"
+else
+  export PORT=4500
+  export SERVE_CMD="npm run serve"
+fi
+
+
 function merge-json() {
   # merge the second json file into the first.
   TEMP_FILE=$(mktemp)
@@ -44,7 +53,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:4500',
+    baseURL: 'http://localhost:$PORT',
     trace: 'on-first-retry',
   },
   projects: [
@@ -55,7 +64,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run serve',
-    url: 'http://localhost:4500',
+    url: 'http://localhost:$PORT',
     reuseExistingServer: !process.env.CI
   }
 });
@@ -65,7 +74,7 @@ EOF
 cat > temp.json << EOF
 {
   "scripts": {
-    "serve": "npm explore $EXAMPLE -- npm run serve",
+    "serve": "npm explore $EXAMPLE -- $SERVE_CMD",
     "test": "playwright test",
     "test:ui": "playwright test --ui"
   }

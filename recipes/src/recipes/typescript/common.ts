@@ -11,10 +11,10 @@ export const baseTSConfig =
   "include": ["src"]
 }`;
 
-export const baseTypeScriptExample =
-`import * as Bokeh from "@bokeh/bokehjs";
-
-console.info("BokehJS version:", Bokeh.version);
+export const baseTypeScriptExample = {
+  import: 'import * as Bokeh from "@bokeh/bokehjs";\n',
+  function:
+`console.info("BokehJS version:", Bokeh.version);
 
 function create_bokehjs_plot(target_id: string) {
   const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
@@ -38,4 +38,7 @@ function create_bokehjs_plot(target_id: string) {
 
   const column = new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
   Bokeh.Plotting.show(column, target_id);
-}`;
+}
+`,
+  create: 'create_bokehjs_plot("#target");'
+};

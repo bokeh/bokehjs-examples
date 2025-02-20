@@ -102,7 +102,9 @@ export default config;`)
       this.add(new CreateFileStep(
         'Replace contents of `src/index.ts` with code to create BokehJS plot',
         'src/index.ts',
-        baseTypeScriptExample + '\n\ncreate_bokehjs_plot("#target");'
+        baseTypeScriptExample.import + "\n" +
+        baseTypeScriptExample.function + "\n" +
+        baseTypeScriptExample.create
       ));
 
       this.add(new CommandStep(
