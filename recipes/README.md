@@ -10,3 +10,8 @@ npm run create
 ```
 
 This will overwrite all existing recipes. If you are happy with the changes, `git commit` them.
+
+To recreate one or more named recipes rather than all of them use:
+```bash
+npm run create -- VanillaWebpack VanillaRspack
+```
