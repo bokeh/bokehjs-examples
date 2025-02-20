@@ -5,4 +5,5 @@
 set -eux
 
 ./single_example.sh typescript vanilla_rspack
+./single_example.sh typescript vanilla_vite
 ./single_example.sh typescript vanilla_webpack

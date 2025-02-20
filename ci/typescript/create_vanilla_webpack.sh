@@ -97,7 +97,7 @@ rm temp.json
 # 8. Build and run basic example without any BokehJS
 # npm install
 # npm run build
-# npm run serve
+# # npm run serve
 # In a web browser navigate to http://localhost:4500/
 
 # 9. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level README.md.
