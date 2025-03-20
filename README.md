@@ -12,11 +12,11 @@ installed.
 
 ```bash
 cd <directory of choice>
-git clone -b ianthomas23/bokehjs_examples_temp --single-branch --depth 1 https://github.com/bokeh/bokeh.git
+git clone -b ianthomas23/13732_maybe_initialize --single-branch --depth 1 https://github.com/bokeh/bokeh.git
 cd bokeh/bokehjs
 node make build
 npm pack
 ```
 
-This will produce the file `bokeh-bokehjs-3.7.0-dev.5.tgz` which should be copied to the root
+This will produce the file `bokeh-bokehjs-3.8.0-dev.1.tgz` which should be copied to the root
 directory of the bokehjs-examples repository.

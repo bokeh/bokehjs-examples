@@ -100,7 +100,7 @@ rm temp.json
 # In a web browser navigate to http://localhost:4500/
 
 # 9. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level README.md.
-npm install ../../../../bokeh-bokehjs-3.7.0-dev.5.tgz
+npm install ../../../../bokeh-bokehjs-3.8.0-dev.1.tgz
 
 # 10. Replace contents of src/index.ts with code to create BokehJS plot
 mkdir -p src
