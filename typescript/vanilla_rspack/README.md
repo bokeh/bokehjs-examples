@@ -101,7 +101,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 9. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level `README.md`.
 
     ```bash
-    npm install ../../../../bokeh-bokehjs-3.7.0-dev.5.tgz
+    npm install ../../../../bokeh-bokehjs-3.8.0-dev.1.tgz
     ```
 
 10. Replace contents of `src/index.ts` with code to create BokehJS plot containing
