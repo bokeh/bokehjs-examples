@@ -12,7 +12,7 @@ fi
 export TYPE=$1
 export EXAMPLE=$2
 
-if [ $EXAMPLE == "vanilla_vite" ]; then
+if [[ $EXAMPLE =~ _vite$ ]]; then
   export PORT=5173
   export SERVE_CMD="npm run dev"
 else
