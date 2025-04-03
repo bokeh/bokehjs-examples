@@ -105,7 +105,7 @@ export default config;`)
         baseTypeScriptExample.import + "\n" +
         baseTypeScriptExample.version + "\n" +
         baseTypeScriptExample.function + "\n" +
-        baseTypeScriptExample.show
+        baseTypeScriptExample.show()
       ));
 
       this.add(new CommandStep(

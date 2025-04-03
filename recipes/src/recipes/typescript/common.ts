@@ -38,5 +38,5 @@ export const baseTypeScriptExample = {
   return new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
 }
 `,
-  show: 'Bokeh.Plotting.show(create_bokehjs_plot(), "#target");\n'
+  show: (target: string = '"#target"') => 'Bokeh.Plotting.show(create_bokehjs_plot(), ' + target + ');\n'
 };

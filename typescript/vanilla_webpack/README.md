@@ -30,7 +30,7 @@
 
 4. Create webpack configuration `webpack.config.ts` containing
 
-    ```typescript
+    ```ts
     import path from 'path';
     import webpack from 'webpack';
     import 'webpack-dev-server';
@@ -72,7 +72,7 @@
 
 6. Create source typescript file `src/index.ts` containing
 
-    ```typescript
+    ```ts
     console.log("Successfully loaded")
     ```
 
@@ -105,7 +105,7 @@
 
 10. Replace contents of `src/index.ts` with code to create BokehJS plot containing
 
-    ```typescript
+    ```ts
     import * as Bokeh from "@bokeh/bokehjs";
 
     console.info("BokehJS version:", Bokeh.version);

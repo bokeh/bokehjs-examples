@@ -32,7 +32,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 4. Create rspack configuration `rspack.config.ts` containing
 
-    ```typescript
+    ```ts
     import path from 'path';
     import { Configuration } from '@rspack/cli';
 
@@ -73,7 +73,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 6. Create source typescript file `src/index.ts` containing
 
-    ```typescript
+    ```ts
     console.log("Successfully loaded")
     ```
 
@@ -106,7 +106,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 10. Replace contents of `src/index.ts` with code to create BokehJS plot containing
 
-    ```typescript
+    ```ts
     import * as Bokeh from "@bokeh/bokehjs";
 
     console.info("BokehJS version:", Bokeh.version);
