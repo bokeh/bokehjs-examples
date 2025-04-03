@@ -29,7 +29,7 @@ export abstract class Step {   //}   implements IWriteVisitor {
  */
 export class CommandStep extends Step {
   constructor(
-    readonly description: string,
+    description: string,
     readonly commands: string[],
     readonly postscript: string = '',
     readonly ignoreIfBash: boolean = false
@@ -71,7 +71,7 @@ export class CommandStep extends Step {
 
 abstract class CreateOrReplaceFileStep extends Step {
   constructor(
-    readonly description: string,
+    description: string,
     readonly filename: string,
     readonly contents: string,
     readonly alreadyExists: boolean
@@ -128,7 +128,7 @@ export class CreateFileStep extends CreateOrReplaceFileStep {
  * Step to create a file.
  */
 export class MergeJsonStep extends Step {
-  constructor(readonly description: string, readonly filename: string, readonly toMerge: string) {
+  constructor(description: string, readonly filename: string, readonly toMerge: string) {
     super(description);
   }
 
@@ -167,7 +167,7 @@ export class MergeJsonStep extends Step {
  * Step to remove files.
  */
 export class RemoveFilesStep extends Step {
-  constructor(readonly description: string, readonly filenames: string[]) {
+  constructor(description: string, readonly filenames: string[]) {
     super(description);
   }
 

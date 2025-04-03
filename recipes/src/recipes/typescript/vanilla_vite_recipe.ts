@@ -54,7 +54,7 @@ export class VanillaViteRecipe extends Recipe {
       baseTypeScriptExample.version + "\n" +
       baseTypeScriptExample.function + "\n" +
       "document.querySelector<HTMLDivElement>('#app')!.innerHTML = \\`<div id='target'>Hello</div>\\`;\n\n" +
-      baseTypeScriptExample.show
+      baseTypeScriptExample.show()
     ));
 
     this.add(new CommandStep(

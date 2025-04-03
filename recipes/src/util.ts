@@ -14,8 +14,9 @@ export function languageFromExtension(filename: string): string {
     case '.json': {
       return 'json';
     }
-    case '.ts': {
-      return 'typescript';
+    case '.ts':
+    case '.vue': {
+      return 'ts';
     }
     default: {
       return '';

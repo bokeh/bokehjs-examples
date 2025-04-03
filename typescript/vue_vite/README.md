@@ -1,11 +1,11 @@
-# Vanilla (no framework) vite typescript example
+# Vue vite typescript example
 
 Create an initial basic project using `create-vite`.
 
 1. Create base `vite` project
 
     ```bash
-    npm create vite@latest . -- --template vanilla-ts --yes
+    npm create vite@latest . -- --template vue-ts --yes
     ```
 
 2. Build and run initial basic project
@@ -20,16 +20,29 @@ Create an initial basic project using `create-vite`.
 3. Simplify by removing some unwanted files
 
     ```bash
-    rm public/vite.svg src/counter.ts src/style.css src/typescript.svg
+    rm public/vite.svg src/assets/vue.svg src/components/HelloWorld.vue src/style.css
     ```
 
-4. Replace `src/main.ts` with a simple hello example containing
+4. Replace `src/App.vue` with a simple hello example containing
 
     ```ts
-    document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<div>Hello</div>`
+    <template>
+      <div>
+        Hello!
+      </div>
+    </template>
     ```
 
-5. Build and run the minimal example
+5. Remove CSS lines from `src/main.ts` by replacing it containing
+
+    ```ts
+    import { createApp } from 'vue'
+    import App from './App.vue'
+
+    createApp(App).mount('#app')
+    ```
+
+6. Build and run the minimal example
 
     ```bash
     npm run dev
@@ -37,18 +50,20 @@ Create an initial basic project using `create-vite`.
 
     In a web browser navigate to http://localhost:5173/
 
-6. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level `README.md`.
+7. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level `README.md`.
 
     ```bash
     npm install ../../../../bokeh-bokehjs-3.8.0-dev.1.tgz
     ```
 
-7. Replace `src/main.ts` with a simple hello example containing
+8. Create a new file of `src/components/BokehComponent.vue` with code to create BokehJS plot containing
 
     ```ts
+    <script setup lang="ts">
+    import { useTemplateRef, onMounted } from 'vue'
     import * as Bokeh from "@bokeh/bokehjs";
 
-    console.info("BokehJS version:", Bokeh.version);
+    const ref = useTemplateRef('target')
 
     function create_bokehjs_plot(): Bokeh.Column {
       const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
@@ -73,13 +88,30 @@ Create an initial basic project using `create-vite`.
       return new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
     }
 
-    document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<div id='target'>Hello</div>`;
+    onMounted(() => {
+      console.info("BokehJS version:", Bokeh.version);
+      Bokeh.Plotting.show(create_bokehjs_plot(), ref.value);
+    })
+    </script>
 
-    Bokeh.Plotting.show(create_bokehjs_plot(), "#target");
-
+    <template>
+      <div ref="target"></div>
+    </template>
     ```
 
-8. Rebuild and serve
+9. Replace `src/App.vue` so that it uses the `BokehComponent` containing
+
+    ```ts
+    <script setup lang="ts">
+    import BokehComponent from './components/BokehComponent.vue'
+    </script>
+
+    <template>
+      <BokehComponent />
+    </template>
+    ```
+
+10. Rebuild and serve
 
     ```bash
     npm run dev
