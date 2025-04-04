@@ -2,18 +2,18 @@ import { Recipe } from '../../recipe';
 import { CommandStep, CreateFileStep, RemoveFilesStep, ReplaceFileStep } from '../../step';
 import { baseTypeScriptExample } from './common';
 
-export class VueViteRecipe extends Recipe {
+export class ReactViteRecipe extends Recipe {
   constructor() {
     super(
       'typescript',
-      'vue',
+      'react',
       'vite',
       'Create an initial basic project using `create-vite`.'
     );
 
     this.add(new CommandStep(
       'Create base `vite` project',
-      ['npm create vite@latest . -- --template vue-ts --yes']
+      ['npm create vite@latest . -- --template react-ts --yes']
     ));
 
     this.add(new CommandStep(
@@ -25,26 +25,36 @@ export class VueViteRecipe extends Recipe {
 
     this.add(new RemoveFilesStep(
       'Simplify by removing some unwanted files',
-      ['public/vite.svg', 'src/assets/vue.svg', 'src/components/HelloWorld.vue', 'src/style.css']
+      ['src/assets/react.svg', 'src/App.css', 'src/index.css', 'public/vite.svg']
     ));
 
     this.add(new ReplaceFileStep(
-      'Replace `src/App.vue` with a simple hello example',
-      'src/App.vue',
-`<template>
-  <div>
-    Hello!
-  </div>
-</template>`)
+      'Replace `src/App.tsx` with a simple hello example',
+      'src/App.tsx',
+`function App() {
+  return (
+    <>
+      <div>Hello</div>
+    </>
+  )
+}
+
+export default App`)
     );
 
-    this.add(new ReplaceFileStep(
-      'Remove CSS lines from `src/main.ts` by replacing it',
-      'src/main.ts',
-`import { createApp } from 'vue'
-import App from './App.vue'
 
-createApp(App).mount('#app')`)
+    this.add(new ReplaceFileStep(
+      'Remove CSS lines from `src/main.tsx` by replacing it',
+      'src/main.tsx',
+`import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)`)
     );
 
     this.add(new CommandStep(
@@ -61,34 +71,43 @@ createApp(App).mount('#app')`)
     ));
 
     this.add(new CreateFileStep(
-      'Create a new file `src/components/BokehComponent.vue` containing a BokehJS plot component',
-      'src/components/BokehComponent.vue',
-      '<script setup lang="ts">\n' +
-      "import { useTemplateRef, onMounted } from 'vue'\n" +
+      'Create a new file `src/components/BokehComponent.tsx` containing a BokehJS plot component',
+      'src/BokehComponent.tsx',
+      "import { useEffect, useRef } from 'react'\n" +
       baseTypeScriptExample.import + "\n" +
-      "const ref = useTemplateRef('target')\n\n" +
+      baseTypeScriptExample.version + "\n" +
       baseTypeScriptExample.function + "\n" +
-      'onMounted(() => {\n' +
-      '  ' + baseTypeScriptExample.version +
-      '  ' + baseTypeScriptExample.show('ref.value') +
-`})
-</script>
+`export function BokehComponent() {
+  const shown = useRef(false);
+  useEffect(() => {
+    if (!shown.current) {` + "\n" +
+    '        ' + baseTypeScriptExample.show() +
+`    shown.current = true;
+    }
+  }, [])
 
-<template>
-  <div ref="target"></div>
-</template>`)
+  return (
+    <>
+      <div id="target"></div>
+    </>
+  )
+}`)
     );
 
     this.add(new ReplaceFileStep(
-      'Replace `src/App.vue` so that it uses the `BokehComponent`',
-      'src/App.vue',
-`<script setup lang="ts">
-import BokehComponent from './components/BokehComponent.vue'
-</script>
+      'Replace `src/App.tsx` so that it uses the `BokehComponent`',
+      'src/App.tsx',
+`import { BokehComponent } from './BokehComponent.tsx'
 
-<template>
-  <BokehComponent />
-</template>`)
+function App() {
+  return (
+    <>
+      <BokehComponent />
+    </>
+  )
+}
+
+export default App`)
     );
 
     this.add(new CommandStep(

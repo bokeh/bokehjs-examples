@@ -8,11 +8,10 @@ export function fileExtension(filename: string): string {
 export function languageFromExtension(filename: string): string {
   const extension = fileExtension(filename);
   switch (extension) {
-    case '.html': {
-      return 'html';
-    }
-    case '.json': {
-      return 'json';
+    case '.html':
+    case '.json':
+    case '.tsx': {
+      return extension;
     }
     case '.ts':
     case '.vue': {
