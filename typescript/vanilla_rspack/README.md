@@ -16,7 +16,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 3. Create typescript configuration `tsconfig.json` containing
 
-    ```json
+    ```.json
     {
       "compilerOptions": {
         "baseUrl": ".",
@@ -58,7 +58,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 5. Create HTML file `assets/index.html` containing
 
-    ```html
+    ```.html
     <!DOCTYPE html>
     <html>
     <head>
@@ -79,7 +79,7 @@ This is almost identical to the vanilla webpack example, as `rspack` is designed
 
 7. Add `build` and `serve` commands to the `scripts` section of `package.json`
 
-    ```json
+    ```.json
     {
       "scripts": {
         "build": "rspack build",

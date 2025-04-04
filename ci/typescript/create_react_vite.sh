@@ -2,7 +2,7 @@
 
 set -eux
 
-export OUTPUT_DIRECTORY=../temp/typescript/vue_vite
+export OUTPUT_DIRECTORY=../temp/typescript/react_vite
 
 mkdir -p $OUTPUT_DIRECTORY
 cd $OUTPUT_DIRECTORY
@@ -15,7 +15,7 @@ function merge-json() {
 }
 
 # 1. Create base vite project
-npm create vite@latest . -- --template vue-ts --yes
+npm create vite@latest . -- --template react-ts --yes
 
 # 2. Build and run initial basic project
 # npm install
@@ -23,23 +23,32 @@ npm create vite@latest . -- --template vue-ts --yes
 # In a web browser navigate to http://localhost:5173/
 
 # 3. Simplify by removing some unwanted files
-rm public/vite.svg src/assets/vue.svg src/components/HelloWorld.vue src/style.css
+rm src/assets/react.svg src/App.css src/index.css public/vite.svg
 
-# 4. Replace src/App.vue with a simple hello example
-cat > src/App.vue << EOF
-<template>
-  <div>
-    Hello!
-  </div>
-</template>
+# 4. Replace src/App.tsx with a simple hello example
+cat > src/App.tsx << EOF
+function App() {
+  return (
+    <>
+      <div>Hello</div>
+    </>
+  )
+}
+
+export default App
 EOF
 
-# 5. Remove CSS lines from src/main.ts by replacing it
-cat > src/main.ts << EOF
-import { createApp } from 'vue'
-import App from './App.vue'
+# 5. Remove CSS lines from src/main.tsx by replacing it
+cat > src/main.tsx << EOF
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
 
-createApp(App).mount('#app')
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
 EOF
 
 # 6. Build and run the minimal example
@@ -49,14 +58,13 @@ EOF
 # 7. Add BokehJS dependency to this project. This assumes the package has been built and copied to the root directory of this repository as outlined in the top-level README.md.
 npm install ../../../../bokeh-bokehjs-3.8.0-dev.1.tgz
 
-# 8. Create a new file src/components/BokehComponent.vue containing a BokehJS plot component
-mkdir -p src/components
-cat > src/components/BokehComponent.vue << EOF
-<script setup lang="ts">
-import { useTemplateRef, onMounted } from 'vue'
+# 8. Create a new file src/components/BokehComponent.tsx containing a BokehJS plot component
+mkdir -p src
+cat > src/BokehComponent.tsx << EOF
+import { useEffect, useRef } from 'react'
 import * as Bokeh from "@bokeh/bokehjs";
 
-const ref = useTemplateRef('target')
+console.info("BokehJS version:", Bokeh.version);
 
 function create_bokehjs_plot(): Bokeh.Column {
   const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
@@ -81,26 +89,36 @@ function create_bokehjs_plot(): Bokeh.Column {
   return new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
 }
 
-onMounted(() => {
-  console.info("BokehJS version:", Bokeh.version);
-  Bokeh.Plotting.show(create_bokehjs_plot(), ref.value);
-})
-</script>
+export function BokehComponent() {
+  const shown = useRef(false);
+  useEffect(() => {
+    if (!shown.current) {
+        Bokeh.Plotting.show(create_bokehjs_plot(), "#target");
+    shown.current = true;
+    }
+  }, [])
 
-<template>
-  <div ref="target"></div>
-</template>
+  return (
+    <>
+      <div id="target"></div>
+    </>
+  )
+}
 EOF
 
-# 9. Replace src/App.vue so that it uses the BokehComponent
-cat > src/App.vue << EOF
-<script setup lang="ts">
-import BokehComponent from './components/BokehComponent.vue'
-</script>
+# 9. Replace src/App.tsx so that it uses the BokehComponent
+cat > src/App.tsx << EOF
+import { BokehComponent } from './BokehComponent.tsx'
 
-<template>
-  <BokehComponent />
-</template>
+function App() {
+  return (
+    <>
+      <BokehComponent />
+    </>
+  )
+}
+
+export default App
 EOF
 
 # 10. Rebuild and serve

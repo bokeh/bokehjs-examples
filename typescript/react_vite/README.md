@@ -1,11 +1,11 @@
-# Vue vite typescript example
+# React vite typescript example
 
 Create an initial basic project using `create-vite`.
 
 1. Create base `vite` project
 
     ```bash
-    npm create vite@latest . -- --template vue-ts --yes
+    npm create vite@latest . -- --template react-ts --yes
     ```
 
 2. Build and run initial basic project
@@ -20,26 +20,35 @@ Create an initial basic project using `create-vite`.
 3. Simplify by removing some unwanted files
 
     ```bash
-    rm public/vite.svg src/assets/vue.svg src/components/HelloWorld.vue src/style.css
+    rm src/assets/react.svg src/App.css src/index.css public/vite.svg
     ```
 
-4. Replace `src/App.vue` with a simple hello example containing
+4. Replace `src/App.tsx` with a simple hello example containing
 
-    ```ts
-    <template>
-      <div>
-        Hello!
-      </div>
-    </template>
+    ```.tsx
+    function App() {
+      return (
+        <>
+          <div>Hello</div>
+        </>
+      )
+    }
+
+    export default App
     ```
 
-5. Remove CSS lines from `src/main.ts` by replacing it containing
+5. Remove CSS lines from `src/main.tsx` by replacing it containing
 
-    ```ts
-    import { createApp } from 'vue'
-    import App from './App.vue'
+    ```.tsx
+    import { StrictMode } from 'react'
+    import { createRoot } from 'react-dom/client'
+    import App from './App.tsx'
 
-    createApp(App).mount('#app')
+    createRoot(document.getElementById('root')!).render(
+      <StrictMode>
+        <App />
+      </StrictMode>,
+    )
     ```
 
 6. Build and run the minimal example
@@ -56,14 +65,13 @@ Create an initial basic project using `create-vite`.
     npm install ../../../../bokeh-bokehjs-3.8.0-dev.1.tgz
     ```
 
-8. Create a new file `src/components/BokehComponent.vue` containing a BokehJS plot component containing
+8. Create a new file `src/components/BokehComponent.tsx` containing a BokehJS plot component containing
 
-    ```ts
-    <script setup lang="ts">
-    import { useTemplateRef, onMounted } from 'vue'
+    ```.tsx
+    import { useEffect, useRef } from 'react'
     import * as Bokeh from "@bokeh/bokehjs";
 
-    const ref = useTemplateRef('target')
+    console.info("BokehJS version:", Bokeh.version);
 
     function create_bokehjs_plot(): Bokeh.Column {
       const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
@@ -88,27 +96,37 @@ Create an initial basic project using `create-vite`.
       return new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
     }
 
-    onMounted(() => {
-      console.info("BokehJS version:", Bokeh.version);
-      Bokeh.Plotting.show(create_bokehjs_plot(), ref.value);
-    })
-    </script>
+    export function BokehComponent() {
+      const shown = useRef(false);
+      useEffect(() => {
+        if (!shown.current) {
+            Bokeh.Plotting.show(create_bokehjs_plot(), "#target");
+        shown.current = true;
+        }
+      }, [])
 
-    <template>
-      <div ref="target"></div>
-    </template>
+      return (
+        <>
+          <div id="target"></div>
+        </>
+      )
+    }
     ```
 
-9. Replace `src/App.vue` so that it uses the `BokehComponent` containing
+9. Replace `src/App.tsx` so that it uses the `BokehComponent` containing
 
-    ```ts
-    <script setup lang="ts">
-    import BokehComponent from './components/BokehComponent.vue'
-    </script>
+    ```.tsx
+    import { BokehComponent } from './BokehComponent.tsx'
 
-    <template>
-      <BokehComponent />
-    </template>
+    function App() {
+      return (
+        <>
+          <BokehComponent />
+        </>
+      )
+    }
+
+    export default App
     ```
 
 10. Rebuild and serve
