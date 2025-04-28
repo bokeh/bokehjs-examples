@@ -43,7 +43,7 @@ export class CommandStep extends Step {
     const allPrefix = this.ignoreIfBash ? '# ' : '';
     for (const command of this.commands) {
       let prefix = allPrefix;
-      if (command === 'npm run serve' || command === 'npm run dev') {
+      if (command === 'npm run serve' || command === 'npm run dev' || command === 'npm run start') {
         prefix = '# ' + prefix;
       }
       fs.writeSync(fd, prefix + command + '\n');

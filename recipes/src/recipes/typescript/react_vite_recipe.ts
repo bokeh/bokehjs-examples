@@ -42,7 +42,6 @@ export class ReactViteRecipe extends Recipe {
 export default App`)
     );
 
-
     this.add(new ReplaceFileStep(
       'Remove CSS lines from `src/main.tsx` by replacing it',
       'src/main.tsx',

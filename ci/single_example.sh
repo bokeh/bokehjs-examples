@@ -12,9 +12,16 @@ fi
 export TYPE=$1
 export EXAMPLE=$2
 
+export SANITISED_EXAMPLE=$EXAMPLE
+
 if [[ $EXAMPLE =~ _vite$ ]]; then
   export PORT=5173
   export SERVE_CMD="npm run dev"
+elif [[ $EXAMPLE =~ ^angular_ng$ ]]; then
+  export PORT=4200
+  export SERVE_CMD="npm run start"
+  # Angular annoyingly converts underscores to dashes
+  export SANITISED_EXAMPLE=angular-ng
 else
   export PORT=4500
   export SERVE_CMD="npm run serve"
@@ -74,7 +81,7 @@ EOF
 cat > temp.json << EOF
 {
   "scripts": {
-    "serve": "npm explore $EXAMPLE -- $SERVE_CMD",
+    "serve": "npm explore $SANITISED_EXAMPLE -- $SERVE_CMD",
     "test": "playwright test",
     "test:ui": "playwright test --ui"
   }

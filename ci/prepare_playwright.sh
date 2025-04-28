@@ -9,3 +9,4 @@ set -eux
 ./single_example.sh typescript vanilla_vite
 ./single_example.sh typescript react_vite
 ./single_example.sh typescript vue_vite
+./single_example.sh typescript angular_ng
