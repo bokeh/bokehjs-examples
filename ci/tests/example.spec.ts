@@ -17,9 +17,6 @@ test('loads bokehjs', async ({ page }) => {
 test('is interactive', async ({ page }) => {
   await page.goto('/');
 
-  for (var i = 0; i < 20; i++) {
-    await page.locator('.bk-Button').click();
-  }
   // Take screenshot
 
   const boxZoom = await page.getByTitle('Box Zoom').click();
