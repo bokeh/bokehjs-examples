@@ -50,29 +50,21 @@ Create an initial basic project using `create-vite`.
 
     console.info("BokehJS version:", Bokeh.version);
 
-    function create_bokehjs_plot(): Bokeh.Column {
-      const source = new Bokeh.ColumnDataSource({data: { x: [0.1, 0.9], y: [0.1, 0.9], size: [40, 10] }});
-
+    function create_bokehjs_plot(): Bokeh.Plotting.Figure {
+      // Create figure
       const plot = Bokeh.Plotting.figure({
-        title: "Example BokehJS plot", height: 500, width: 500,
-        x_range: [0, 1], y_range: [0, 1], sizing_mode: "stretch_width",
+        title: "Example BokehJS plot", height: 500, sizing_mode: "stretch_width"
       });
 
-      plot.scatter({ field: "x" }, { field: "y" }, {source, size: { field: "size" }});
+      // Calculate x, y value of sine curve
+      const x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      const y = x.map(x => Math.sin(Math.PI*x/6));
 
-      const button = new Bokeh.Widgets.Button({label: "Click me to add a point", button_type: "primary"});
-      function button_callback() {
-        const data = source.data as any;
-        data.x.push(Math.random());
-        data.y.push(Math.random());
-        data.size.push(10 + Math.random()*30);
-        source.change.emit();
-      }
-      button.on_click(button_callback);
+      // Plot circles
+      plot.scatter(x, y, {color: "blue", size: 30, fill_alpha: 0.4});
 
-      return new Bokeh.Column({children: [plot, button], sizing_mode: "stretch_width"});
+      return plot;
     }
-
     document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<div id='target'>Hello</div>`;
 
     Bokeh.Plotting.show(create_bokehjs_plot(), "#target");
