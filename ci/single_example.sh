@@ -73,7 +73,8 @@ export default defineConfig({
     command: 'npm run serve',
     url: 'http://localhost:$PORT',
     reuseExistingServer: !process.env.CI
-  }
+  },
+  snapshotPathTemplate: '{testDir}/../../../../tests/snapshots/{arg}{ext}'
 });
 EOF
 

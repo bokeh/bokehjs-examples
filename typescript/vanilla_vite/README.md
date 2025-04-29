@@ -65,7 +65,7 @@ Create an initial basic project using `create-vite`.
 
       return plot;
     }
-    document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<div id='target'>Hello</div>`;
+    document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<div id='target'></div>`;
 
     Bokeh.Plotting.show(create_bokehjs_plot(), "#target");
 

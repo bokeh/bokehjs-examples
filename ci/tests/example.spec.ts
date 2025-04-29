@@ -17,7 +17,7 @@ test('loads bokehjs', async ({ page }) => {
 test('is interactive', async ({ page }) => {
   await page.goto('/');
 
-  // Take screenshot
+  await expect(page).toHaveScreenshot('initial.png');
 
   const boxZoom = await page.getByTitle('Box Zoom').click();
   const bbox = await page.locator('.bk-CartesianFrame').boundingBox();
@@ -28,9 +28,12 @@ test('is interactive', async ({ page }) => {
   await page.mouse.move(bbox!.x + bbox!.width*0.8, bbox!.y + bbox!.height*0.8);
   await page.mouse.up();
   await page.waitForTimeout(100);
-  // Take screenshot
+
+  await expect(page).toHaveScreenshot('zoom.png');
 
   const reset = await page.getByTitle('Reset').click();
   await page.waitForTimeout(100);
-  // Take screenshot
+
+  // Reset image is the same as initial image except for tool selection
+  await expect(page).toHaveScreenshot('reset.png');
 });
