@@ -36,8 +36,7 @@ and an image of the generated plot:
 
 <img alt="Example plot" src="example.png">
 
-
-## Contents
+## Contents
 
 ### Examples
 
