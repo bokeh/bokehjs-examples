@@ -93,3 +93,6 @@ npm pack
 
 This will produce the file `bokeh-bokehjs-3.8.0-dev.1.tgz` which should be copied to the root
 directory of your `bokehjs-examples` repository.
+
+When Bokeh and BokehJS 4.0 are released, these instructions and the code within this repository
+will be updated to reflect the simpler installation process.
