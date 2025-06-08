@@ -18,7 +18,7 @@ function merge-json() {
 npm install -g @angular/cli
 
 # 2. Create Angular application
-ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css
+ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css --zoneless=false
 
 # 3. Build and serve the initial project
 # npm run build
@@ -64,8 +64,8 @@ export class BokehJSComponent implements OnInit {
 }
 EOF
 
-# 6. Replace src/app/app.component.ts so that it uses the BokehJSComponent
-cat > src/app/app.component.ts << EOF
+# 6. Replace src/app/app.ts so that it uses the BokehJSComponent
+cat > src/app/app.ts << EOF
 import { Component } from '@angular/core'
 import { BokehJSComponent } from './bokeh-js/bokeh-js.component';
 
@@ -76,7 +76,7 @@ import { BokehJSComponent } from './bokeh-js/bokeh-js.component';
   styles: [],
 })
 
-export class AppComponent {}
+export class App {}
 EOF
 
 # 7. Remove some build warnings by allowing non ESM imports by adding to angular.json

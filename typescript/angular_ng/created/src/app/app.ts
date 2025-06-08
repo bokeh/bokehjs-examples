@@ -8,4 +8,4 @@ import { BokehJSComponent } from './bokeh-js/bokeh-js.component';
   styles: [],
 })
 
-export class AppComponent {}
+export class App {}
