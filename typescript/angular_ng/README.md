@@ -11,7 +11,7 @@ The Angular web framework includes its own builder `ng` in the `@angular/cli` pa
 2. Create Angular application
 
     ```bash
-    ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css
+    ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css --zoneless=false
     ```
 
 3. Build and serve the initial project
@@ -65,7 +65,7 @@ The Angular web framework includes its own builder `ng` in the `@angular/cli` pa
     }
     ```
 
-6. Replace `src/app/app.component.ts` so that it uses the `BokehJSComponent` containing
+6. Replace `src/app/app.ts` so that it uses the `BokehJSComponent` containing
 
     ```ts
     import { Component } from '@angular/core'
@@ -78,7 +78,7 @@ The Angular web framework includes its own builder `ng` in the `@angular/cli` pa
       styles: [],
     })
 
-    export class AppComponent {}
+    export class App {}
     ```
 
 7. Remove some build warnings by allowing non ESM imports by adding to `angular.json`

@@ -18,7 +18,7 @@ export class AngularNgRecipe extends Recipe {
 
     this.add(new CommandStep(
       'Create Angular application',
-      ['ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css']
+      ['ng new angular_ng --directory ./ --minimal --routing=false --skip-git --ssr=false --style=css --zoneless=false']
     ));
 
     this.add(new CommandStep(
@@ -55,8 +55,8 @@ export class AngularNgRecipe extends Recipe {
     );
 
     this.add(new ReplaceFileStep(
-      'Replace `src/app/app.component.ts` so that it uses the `BokehJSComponent`',
-      'src/app/app.component.ts',
+      'Replace `src/app/app.ts` so that it uses the `BokehJSComponent`',
+      'src/app/app.ts',
       "import { Component } from '@angular/core'\n" +
       "import { BokehJSComponent } from './bokeh-js/bokeh-js.component';\n\n" +
       "@Component({\n" +
@@ -65,7 +65,7 @@ export class AngularNgRecipe extends Recipe {
       "  template: \\`<app-bokeh-js></app-bokeh-js>\\`,\n" +
       "  styles: [],\n" +
       "})\n\n" +
-      "export class AppComponent {}")
+      "export class App {}")
     );
 
     this.add(new MergeJsonStep(
